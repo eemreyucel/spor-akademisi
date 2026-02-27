@@ -11,7 +11,7 @@ export function StudentForm() {
   const supabase = createClient()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [groups, setGroups] = useState<any[]>([])
+  const [groups, setGroups] = useState<{ id: string; name: string; age_category: string; sports: { name: string } | null }[]>([])
   const [suggestedCategory, setSuggestedCategory] = useState<string | null>(null)
 
   const [form, setForm] = useState({
@@ -21,8 +21,9 @@ export function StudentForm() {
 
   useEffect(() => {
     supabase.from('groups').select('*, sports(name)').is('deleted_at', null).then(({ data }) => {
-      setGroups(data ?? [])
+      setGroups((data ?? []) as { id: string; name: string; age_category: string; sports: { name: string } | null }[])
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -121,7 +122,7 @@ export function StudentForm() {
             <label className="block text-sm font-medium mb-1">Grup</label>
             <select value={form.groupId} onChange={e => updateField('groupId', e.target.value)} className="w-full border rounded-lg p-2">
               <option value="">Seçiniz</option>
-              {groups.map((g: any) => (
+              {groups.map(g => (
                 <option key={g.id} value={g.id}>
                   {g.sports?.name} — {g.name} ({AGE_CATEGORY_LABELS[g.age_category as AgeCategory] ?? g.age_category})
                 </option>

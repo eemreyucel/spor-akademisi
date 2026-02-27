@@ -8,8 +8,8 @@ interface ConflictData {
   id: string
   table_name: string
   record_id: string
-  client_data: Record<string, any>
-  server_data: Record<string, any>
+  client_data: Record<string, unknown>
+  server_data: Record<string, unknown>
   created_at: string
 }
 
@@ -24,6 +24,7 @@ export function ConflictCard({ conflict }: { conflict: ConflictData }) {
     const data = useClient ? conflict.client_data : conflict.server_data
 
     // Apply the chosen data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await supabase.from(conflict.table_name as any).update(data).eq('id', conflict.record_id)
 
     // Mark conflict as resolved

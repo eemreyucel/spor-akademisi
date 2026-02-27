@@ -48,8 +48,10 @@ export default async function DashboardPage() {
 
   const children = []
   for (const link of links ?? []) {
-    const student = link.students as any
-    for (const enrollment of student?.enrollments ?? []) {
+    const studentArr = link.students
+    const student = Array.isArray(studentArr) ? studentArr[0] : studentArr
+    if (!student) continue
+    for (const enrollment of student.enrollments ?? []) {
       const { data: attendance } = await supabase
         .from('attendance')
         .select('date, status')
@@ -63,10 +65,15 @@ export default async function DashboardPage() {
         .eq('enrollment_id', enrollment.id)
         .order('due_date', { ascending: false })
 
+      const groups = enrollment.groups
+      const group = Array.isArray(groups) ? groups[0] : groups
+      const sports = group?.sports
+      const sport = Array.isArray(sports) ? sports[0] : sports
+
       children.push({
         studentName: student.full_name,
-        groupName: enrollment.groups?.name ?? '',
-        sportName: enrollment.groups?.sports?.name ?? '',
+        groupName: group?.name ?? '',
+        sportName: sport?.name ?? '',
         attendance: attendance ?? [],
         payments: payments ?? [],
       })

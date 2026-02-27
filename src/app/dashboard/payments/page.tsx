@@ -9,7 +9,7 @@ export default async function PaymentsPage() {
   const supabase = await createServerSupabaseClient()
   const isParent = profile.roles.includes('parent') && !profile.roles.includes('admin')
 
-  let query = supabase
+  const query = supabase
     .from('payments')
     .select('*, enrollments(students(full_name), groups(name, sports(name)))')
     .order('due_date', { ascending: false })

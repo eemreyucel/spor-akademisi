@@ -10,8 +10,8 @@ export function GroupForm() {
   const supabase = createClient()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [sports, setSports] = useState<any[]>([])
-  const [coaches, setCoaches] = useState<any[]>([])
+  const [sports, setSports] = useState<{ id: string; name: string }[]>([])
+  const [coaches, setCoaches] = useState<{ id: string; full_name: string }[]>([])
 
   const [form, setForm] = useState({
     name: '', sportId: '', coachProfileId: '', ageCategory: '' as AgeCategory | '', scheduleDescription: '',
@@ -20,8 +20,12 @@ export function GroupForm() {
   useEffect(() => {
     supabase.from('sports').select('*').then(({ data }) => setSports(data ?? []))
     supabase.from('profile_roles').select('profile_id, profiles(id, full_name)').eq('role', 'coach').then(({ data }) => {
-      setCoaches((data ?? []).map((d: any) => d.profiles))
+      setCoaches((data ?? []).map(d => {
+        const p = Array.isArray(d.profiles) ? d.profiles[0] : d.profiles
+        return p ? { id: String(p.id), full_name: String(p.full_name) } : null
+      }).filter(Boolean) as { id: string; full_name: string }[])
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -56,7 +60,7 @@ export function GroupForm() {
         <label className="block text-sm font-medium mb-1">Spor Dalı *</label>
         <select required value={form.sportId} onChange={e => setForm(p => ({ ...p, sportId: e.target.value }))} className="w-full border rounded-lg p-2">
           <option value="">Seçiniz</option>
-          {sports.map((s: any) => <option key={s.id} value={s.id}>{s.name}</option>)}
+          {sports.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
         </select>
       </div>
 
@@ -72,7 +76,7 @@ export function GroupForm() {
         <label className="block text-sm font-medium mb-1">Antrenör</label>
         <select value={form.coachProfileId} onChange={e => setForm(p => ({ ...p, coachProfileId: e.target.value }))} className="w-full border rounded-lg p-2">
           <option value="">Seçiniz (opsiyonel)</option>
-          {coaches.filter(Boolean).map((c: any) => <option key={c.id} value={c.id}>{c.full_name}</option>)}
+          {coaches.map(c => <option key={c.id} value={c.id}>{c.full_name}</option>)}
         </select>
       </div>
 
