@@ -9,15 +9,15 @@ export async function POST(request: Request) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
-  const { fullName, dob, tcKimlik, school, address, groupId, season, monthlyFee } = body
+  const { fullName, dob, tcKimlik, school, address, groupId, season, monthlyFee, ageCategory: manualCategory } = body
 
   if (tcKimlik && !validateTcKimlik(tcKimlik)) {
     return NextResponse.json({ error: 'Geçersiz TC Kimlik numarası' }, { status: 400 })
   }
 
-  const ageCategory = calculateAgeCategory(new Date(dob))
+  const ageCategory = manualCategory || calculateAgeCategory(new Date(dob))
   if (!ageCategory) {
-    return NextResponse.json({ error: 'Yaş aralığı 6-17 olmalıdır' }, { status: 400 })
+    return NextResponse.json({ error: 'Yaş aralığı 6-17 olmalıdır veya bir kategori seçiniz' }, { status: 400 })
   }
 
   const { data: student, error: studentError } = await supabase

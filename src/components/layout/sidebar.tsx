@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Ana Sayfa', roles: ['admin', 'coach', 'parent'] },
   { href: '/dashboard/students', label: 'Öğrenciler', roles: ['admin'] },
   { href: '/dashboard/groups', label: 'Gruplar', roles: ['admin'] },
+  { href: '/dashboard/sports', label: 'Branşlar', roles: ['admin'] },
   { href: '/dashboard/attendance', label: 'Yoklama', roles: ['admin', 'coach'] },
   { href: '/dashboard/payments', label: 'Ödemeler', roles: ['admin', 'parent'] },
   { href: '/dashboard/conflicts', label: 'Çakışmalar', roles: ['admin'] },
@@ -85,7 +86,7 @@ export function Sidebar({ roles, fullName }: { roles: UserRole[]; fullName: stri
               href={item.href}
               onClick={() => setOpen(false)}
               className={`block px-3 py-2 rounded-lg text-sm ${
-                pathname === item.href
+                (item.href === '/dashboard' ? pathname === item.href : pathname.startsWith(item.href))
                   ? 'bg-blue-50 text-blue-700 font-medium'
                   : 'text-gray-700 hover:bg-gray-50'
               }`}

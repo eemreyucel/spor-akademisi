@@ -43,7 +43,11 @@ export default async function StudentsPage() {
 
               return (
                 <tr key={s.id} className="border-b hover:bg-gray-50">
-                  <td className="p-3 font-medium">{s.full_name}</td>
+                  <td className="p-3 font-medium">
+                    <Link href={`/dashboard/students/${s.id}`} className="hover:text-blue-600 hover:underline">
+                      {s.full_name}
+                    </Link>
+                  </td>
                   <td className="p-3">
                     <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded">
                       {AGE_CATEGORY_LABELS[s.age_category as AgeCategory] ?? s.age_category}

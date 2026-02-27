@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { getUserProfile } from '@/lib/auth/get-user-roles'
 import { redirect } from 'next/navigation'
+import { NewPaymentButton } from '@/components/payments/payment-page-client'
 
 export default async function PaymentsPage() {
   const profile = await getUserProfile()
@@ -8,6 +9,7 @@ export default async function PaymentsPage() {
 
   const supabase = await createServerSupabaseClient()
   const isParent = profile.roles.includes('parent') && !profile.roles.includes('admin')
+  const isAdmin = profile.roles.includes('admin')
 
   const query = supabase
     .from('payments')
@@ -28,7 +30,10 @@ export default async function PaymentsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Ödemeler</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Ödemeler</h1>
+        {isAdmin && <NewPaymentButton />}
+      </div>
 
       <div className="bg-white rounded-lg border overflow-hidden">
         <table className="w-full text-sm">

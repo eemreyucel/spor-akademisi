@@ -14,13 +14,17 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: 'Grup seçimi zorunludur' }, { status: 400 })
   }
 
+  const fee = monthlyFee !== undefined && monthlyFee !== null && monthlyFee !== ''
+    ? parseFloat(String(monthlyFee))
+    : 0
+
   const { data: enrollment, error } = await supabase
     .from('enrollments')
     .insert({
       student_id: studentId,
       group_id: groupId,
       season: season || '2025-2026',
-      monthly_fee: monthlyFee || 0,
+      monthly_fee: isNaN(fee) ? 0 : fee,
       start_date: new Date().toISOString().split('T')[0],
     })
     .select()

@@ -24,7 +24,9 @@ export default async function GroupsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {(groups ?? []).map(g => (
           <div key={g.id} className="bg-white rounded-lg border p-4">
-            <h3 className="font-semibold">{g.name}</h3>
+            <Link href={`/dashboard/groups/${g.id}`} className="font-semibold hover:text-blue-600 hover:underline">
+              {g.name}
+            </Link>
             <p className="text-sm text-gray-500">{g.sports?.[0]?.name}</p>
             <div className="flex gap-2 mt-2">
               <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">

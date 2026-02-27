@@ -16,7 +16,7 @@ export function StudentForm() {
 
   const [form, setForm] = useState({
     fullName: '', dob: '', tcKimlik: '', school: '', address: '',
-    groupId: '', monthlyFee: '',
+    groupId: '', monthlyFee: '', ageCategory: '',
   })
 
   useEffect(() => {
@@ -59,6 +59,7 @@ export function StudentForm() {
         address: form.address || undefined,
         groupId: form.groupId || undefined,
         monthlyFee: form.monthlyFee ? parseFloat(form.monthlyFee) : undefined,
+        ageCategory: form.ageCategory || undefined,
         season: '2025-2026',
       }),
     })
@@ -92,11 +93,29 @@ export function StudentForm() {
           </div>
         </div>
 
-        {suggestedCategory && (
-          <div className="bg-blue-50 text-blue-700 p-2 rounded text-sm">
-            Önerilen kategori: <strong>{AGE_CATEGORY_LABELS[suggestedCategory as AgeCategory]}</strong>
-          </div>
-        )}
+        <div>
+          <label className="block text-sm font-medium mb-1">Yaş Kategorisi</label>
+          <select
+            value={form.ageCategory}
+            onChange={e => updateField('ageCategory', e.target.value)}
+            className="w-full border rounded-lg p-2"
+          >
+            <option value="">Otomatik Hesapla</option>
+            {(Object.entries(AGE_CATEGORY_LABELS) as [AgeCategory, string][]).map(([key, label]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
+          {suggestedCategory && !form.ageCategory && (
+            <p className="text-xs text-blue-600 mt-1">
+              Doğum tarihine göre önerilen: <strong>{AGE_CATEGORY_LABELS[suggestedCategory as AgeCategory]}</strong>
+            </p>
+          )}
+          {form.ageCategory && suggestedCategory && form.ageCategory !== suggestedCategory && (
+            <p className="text-xs text-yellow-600 mt-1">
+              Otomatik öneri: {AGE_CATEGORY_LABELS[suggestedCategory as AgeCategory]} — Elle seçilen kategori kullanılacak.
+            </p>
+          )}
+        </div>
 
         <div>
           <label className="block text-sm font-medium mb-1">TC Kimlik No</label>
