@@ -13,7 +13,11 @@ export function ChildDashboard({ child }: { child: ChildData }) {
     <div className="bg-white rounded-lg border p-4 space-y-4">
       <div>
         <h3 className="font-semibold text-lg">{child.studentName}</h3>
-        <p className="text-sm text-gray-500">{child.sportName} — {child.groupName}</p>
+        {child.groupName ? (
+          <p className="text-sm text-gray-500">{child.sportName} — {child.groupName}</p>
+        ) : (
+          <p className="text-sm text-yellow-600">Henüz bir gruba atanmamış</p>
+        )}
       </div>
 
       <div>

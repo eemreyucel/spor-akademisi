@@ -87,6 +87,12 @@ export function InviteForm() {
     setTimeout(() => setCopiedId(null), 2000)
   }
 
+  async function handleDelete(id: string) {
+    if (!confirm('Bu daveti silmek istediğinize emin misiniz?')) return
+    await fetch(`/api/invitations/${id}`, { method: 'DELETE' })
+    fetchInvitations()
+  }
+
   function getStatus(inv: Invitation) {
     if (inv.used_at) return { label: 'Kullanıldı', className: 'bg-gray-100 text-gray-600' }
     if (new Date(inv.expires_at) < new Date()) return { label: 'Süresi Doldu', className: 'bg-red-100 text-red-600' }
@@ -173,7 +179,7 @@ export function InviteForm() {
                 <tr key={inv.id} className="border-b hover:bg-gray-50">
                   <td className="p-3">
                     <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded">
-                      {inv.role === 'coach' ? 'Antrenör' : 'Veli'}
+                      {inv.role === 'admin' ? 'Yönetici' : inv.role === 'coach' ? 'Antrenör' : 'Veli'}
                     </span>
                   </td>
                   <td className="p-3 text-gray-500">{inv.email ?? '—'}</td>
@@ -186,14 +192,22 @@ export function InviteForm() {
                     {new Date(inv.created_at).toLocaleDateString('tr-TR')}
                   </td>
                   <td className="p-3">
-                    {!inv.used_at && new Date(inv.expires_at) >= new Date() && (
+                    <div className="flex gap-2">
+                      {!inv.used_at && new Date(inv.expires_at) >= new Date() && (
+                        <button
+                          onClick={() => copyLink(inv.token, inv.id)}
+                          className="text-blue-600 hover:underline text-xs"
+                        >
+                          {copiedId === inv.id ? 'Kopyalandı!' : 'Linki Kopyala'}
+                        </button>
+                      )}
                       <button
-                        onClick={() => copyLink(inv.token, inv.id)}
-                        className="text-blue-600 hover:underline text-xs"
+                        onClick={() => handleDelete(inv.id)}
+                        className="text-red-600 hover:underline text-xs"
                       >
-                        {copiedId === inv.id ? 'Kopyalandı!' : 'Linki Kopyala'}
+                        Sil
                       </button>
-                    )}
+                    </div>
                   </td>
                 </tr>
               )

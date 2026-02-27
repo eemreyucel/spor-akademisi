@@ -51,7 +51,21 @@ export default async function DashboardPage() {
     const studentArr = link.students
     const student = Array.isArray(studentArr) ? studentArr[0] : studentArr
     if (!student) continue
-    for (const enrollment of student.enrollments ?? []) {
+
+    const enrollments = student.enrollments ?? []
+
+    if (enrollments.length === 0) {
+      children.push({
+        studentName: student.full_name,
+        groupName: '',
+        sportName: '',
+        attendance: [],
+        payments: [],
+      })
+      continue
+    }
+
+    for (const enrollment of enrollments) {
       const { data: attendance } = await supabase
         .from('attendance')
         .select('date, status')

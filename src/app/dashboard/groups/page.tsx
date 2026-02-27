@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { AGE_CATEGORY_LABELS, type AgeCategory } from '@/lib/utils/age-category'
 import Link from 'next/link'
+import { DeleteGroupButton } from '@/components/groups/delete-group-button'
 
 export default async function GroupsPage() {
   const supabase = await createServerSupabaseClient()
@@ -34,6 +35,9 @@ export default async function GroupsPage() {
               </span>
             </div>
             {g.schedule_description && <p className="text-xs text-gray-400 mt-2">{g.schedule_description}</p>}
+            <div className="mt-3 pt-2 border-t">
+              <DeleteGroupButton groupId={g.id} />
+            </div>
           </div>
         ))}
         {(groups ?? []).length === 0 && (
