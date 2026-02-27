@@ -52,8 +52,8 @@ export function LoginForm() {
         {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
       </button>
 
-      <p className="text-center text-sm text-gray-500">
-        Hesabın yok mu? <a href="/signup" className="text-blue-600 hover:underline">Kayıt Ol</a>
+      <p className="text-center text-sm text-gray-400">
+        Kayıt olmak için yöneticinizden davet linki alın.
       </p>
     </form>
   )

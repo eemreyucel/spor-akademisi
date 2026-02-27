@@ -19,6 +19,7 @@ const navItems: NavItem[] = [
   { href: '/dashboard/attendance', label: 'Yoklama', roles: ['admin', 'coach'] },
   { href: '/dashboard/payments', label: 'Ödemeler', roles: ['admin', 'parent'] },
   { href: '/dashboard/conflicts', label: 'Çakışmalar', roles: ['admin'] },
+  { href: '/dashboard/invitations', label: 'Davetiyeler', roles: ['admin'] },
 ]
 
 export function Sidebar({ roles, fullName }: { roles: UserRole[]; fullName: string }) {
