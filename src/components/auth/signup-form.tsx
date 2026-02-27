@@ -108,7 +108,7 @@ export function SignupForm() {
     )
   }
 
-  const roleLabel = inviteRole === 'coach' ? 'Antrenör' : 'Veli'
+  const roleLabel = inviteRole === 'admin' ? 'Yönetici' : inviteRole === 'coach' ? 'Antrenör' : 'Veli'
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-sm">

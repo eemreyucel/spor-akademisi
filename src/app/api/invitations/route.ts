@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   const body = await request.json()
   const { role, email, studentId } = body
 
-  if (!role || !['coach', 'parent'].includes(role)) {
+  if (!role || !['admin', 'coach', 'parent'].includes(role)) {
     return NextResponse.json({ error: 'Geçersiz rol' }, { status: 400 })
   }
 

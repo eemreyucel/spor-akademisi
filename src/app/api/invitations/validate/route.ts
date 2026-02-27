@@ -1,9 +1,8 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const token = searchParams.get('token')
+export async function GET(request: NextRequest) {
+  const token = request.nextUrl.searchParams.get('token')
 
   if (!token) {
     return NextResponse.json({ error: 'Token gerekli' }, { status: 400 })

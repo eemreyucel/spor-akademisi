@@ -19,7 +19,7 @@ interface Invitation {
 }
 
 export function InviteForm() {
-  const [role, setRole] = useState<'coach' | 'parent'>('coach')
+  const [role, setRole] = useState<'admin' | 'coach' | 'parent'>('coach')
   const [email, setEmail] = useState('')
   const [studentId, setStudentId] = useState('')
   const [students, setStudents] = useState<Student[]>([])
@@ -108,9 +108,10 @@ export function InviteForm() {
             <label className="block text-sm font-medium mb-1">Rol</label>
             <select
               value={role}
-              onChange={(e) => setRole(e.target.value as 'coach' | 'parent')}
+              onChange={(e) => setRole(e.target.value as 'admin' | 'coach' | 'parent')}
               className="w-full border rounded-lg p-2"
             >
+              <option value="admin">Yönetici</option>
               <option value="coach">Antrenör</option>
               <option value="parent">Veli</option>
             </select>

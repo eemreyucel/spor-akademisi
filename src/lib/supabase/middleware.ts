@@ -28,13 +28,15 @@ export async function updateSession(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   const publicRoutes = ['/login', '/signup']
-  if (!user && !publicRoutes.includes(request.nextUrl.pathname)) {
+  const publicApiRoutes = ['/api/invitations/validate', '/api/auth/signup']
+  const isPublic = publicRoutes.includes(request.nextUrl.pathname) || publicApiRoutes.includes(request.nextUrl.pathname)
+  if (!user && !isPublic) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  if (user && publicRoutes.includes(request.nextUrl.pathname)) {
+  if (user && publicRoutes.includes(request.nextUrl.pathname) && !request.nextUrl.searchParams.has('token')) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)

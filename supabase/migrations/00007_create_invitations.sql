@@ -2,7 +2,7 @@
 CREATE TABLE invitations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   token UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
-  role TEXT NOT NULL CHECK (role IN ('coach', 'parent')),
+  role TEXT NOT NULL CHECK (role IN ('admin', 'coach', 'parent')),
   email TEXT,
   student_id UUID REFERENCES students(id),
   created_by UUID NOT NULL REFERENCES profiles(id),
