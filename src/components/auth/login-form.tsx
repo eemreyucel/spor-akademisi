@@ -31,7 +31,8 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-sm">
-      <h1 className="text-2xl font-bold text-center">Giriş Yap</h1>
+      <h1 className="text-2xl font-bold text-center">Acro & Art Studio</h1>
+      <p className="text-center text-gray-500 text-sm -mt-2">Giriş Yap</p>
 
       {error && (
         <div className="bg-red-50 text-red-600 p-3 rounded text-sm">{error}</div>

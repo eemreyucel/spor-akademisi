@@ -1,7 +1,7 @@
 {
-  "name": "Spor Akademisi",
-  "short_name": "Akademi",
-  "description": "Spor akademisi kayıt ve yönetim uygulaması",
+  "name": "Acro & Art Studio",
+  "short_name": "Acro&Art",
+  "description": "Acro & Art Studio kayıt ve yönetim uygulaması",
   "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#f9fafb",

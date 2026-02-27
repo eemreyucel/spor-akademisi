@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Spor Akademisi",
-  description: "Spor akademisi kayıt ve yönetim uygulaması",
+  title: "Acro & Art Studio",
+  description: "Acro & Art Studio kayıt ve yönetim uygulaması",
   manifest: "/manifest.json",
   themeColor: "#2563eb",
 };

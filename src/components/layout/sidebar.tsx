@@ -37,9 +37,9 @@ export function Sidebar({ roles, fullName }: { roles: UserRole[]; fullName: stri
   }
 
   return (
-    <aside className="w-64 bg-white border-r min-h-screen flex flex-col">
+    <aside className="w-64 bg-white border-r h-screen sticky top-0 flex flex-col">
       <div className="p-4 border-b">
-        <h2 className="font-bold text-lg">Spor Akademisi</h2>
+        <h2 className="font-bold text-lg">Acro & Art Studio</h2>
         <p className="text-sm text-gray-500">{fullName}</p>
         <div className="flex gap-1 mt-1">
           {roles.map(role => (
@@ -50,7 +50,7 @@ export function Sidebar({ roles, fullName }: { roles: UserRole[]; fullName: stri
         </div>
       </div>
 
-      <nav className="flex-1 p-2">
+      <nav className="flex-1 overflow-y-auto p-2">
         {visibleItems.map(item => (
           <Link
             key={item.href}

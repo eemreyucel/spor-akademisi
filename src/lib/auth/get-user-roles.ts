@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
 export type UserRole = 'admin' | 'coach' | 'parent'
 
@@ -15,13 +16,25 @@ export async function getUserProfile(): Promise<UserProfile | null> {
 
   if (!user) return null
 
-  const { data: profile } = await supabase
+  let { data: profile } = await supabase
     .from('profiles')
     .select('id, full_name, email')
     .eq('user_id', user.id)
     .single()
 
-  if (!profile) return null
+  // Auto-create profile if missing (trigger was removed for RLS compatibility)
+  if (!profile) {
+    const serviceClient = createServiceRoleClient()
+    const fullName = user.user_metadata?.full_name || user.email || ''
+    const { data: newProfile } = await serviceClient
+      .from('profiles')
+      .insert({ user_id: user.id, full_name: fullName, email: user.email })
+      .select('id, full_name, email')
+      .single()
+
+    if (!newProfile) return null
+    profile = newProfile
+  }
 
   const { data: roles } = await supabase
     .from('profile_roles')
